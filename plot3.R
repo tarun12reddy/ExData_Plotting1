@@ -1,0 +1,12 @@
+data <- read.table('household_power_consumption.txt', sep = ";", header = TRUE)
+data$Date <- strptime(data$Date, "%d/%m/%Y")
+s <- split(data, as.Date(data$Date))
+new_data <- rbind(s$'2007-02-01', s$'2007-02-02')
+
+plot(as.numeric(as.character(new_data$Sub_metering_1)), col = "black", type = "l", ylab = 'Energy sub metering', xaxt = 'n', xlab = '')
+lines(as.numeric(as.character(new_data$Sub_metering_2)), col = "red")
+lines(as.numeric(as.character(new_data$Sub_metering_3)), col = "blue")
+axis(1, at = c(0, length(s$'2007-02-01'[, 1]), length(s$'2007-02-01'[, 1])+length(s$'2007-02-02'[, 1])), labels = c("Thu", "Fri", "Sat"))
+legend("topright",col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), pch = '_')
+dev.copy(png, file = "plot3.png")
+dev.off()
